@@ -71,11 +71,13 @@ const EditExcursion = () => {
       }
       
       setExcursion(exc);
+      setCurrentPhotos(exc.photos || []);
       setFormData({
         title: exc.title,
         description: exc.description,
         address: exc.address,
-        canton: exc.canton,
+        country: exc.country || 'CH',
+        region: exc.region || exc.canton, // Backward compatibility
         category: exc.category,
         website_url: exc.website_url || '',
         has_grill: exc.has_grill,
@@ -84,6 +86,11 @@ const EditExcursion = () => {
         parking_situation: exc.parking_situation,
         parking_is_free: exc.parking_is_free
       });
+      
+      // Load regions for the country
+      if (exc.country) {
+        loadRegionsForCountry(exc.country);
+      }
     } catch (error) {
       console.error('Error loading excursion:', error);
       toast.error('Ausflug nicht gefunden');
