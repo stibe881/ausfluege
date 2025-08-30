@@ -339,90 +339,95 @@ const ExcursionList = () => {
           </p>
         </div>
 
-        {/* Excursions Grid */}
-        {filteredExcursions.length === 0 ? (
-          <Card className="p-8 text-center">
-            <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Keine Ausflüge gefunden
-            </h3>
-            <p className="text-gray-600">
-              Versuche deine Suchkriterien zu ändern oder{' '}
-              <button onClick={resetFilters} className="text-emerald-600 hover:underline">
-                alle Filter zurücksetzen
-              </button>
-            </p>
-          </Card>
+        {/* Content - List or Map View */}
+        {viewMode === 'map' ? (
+          <MapView excursions={filteredExcursions} filters={filters} />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredExcursions.map((excursion) => (
-              <Card key={excursion.id} className="card-hover border-0 shadow-lg overflow-hidden">
-                <div className="relative h-48 bg-gradient-to-br from-emerald-400 to-teal-500">
-                  {excursion.photos && excursion.photos.length > 0 ? (
-                    <img
-                      src={`${BACKEND_URL}/uploads/photos/${excursion.photos[0]}`}
-                      alt={excursion.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      {getIcon(excursion.category)}
+          /* List View */
+          filteredExcursions.length === 0 ? (
+            <Card className="p-8 text-center">
+              <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Keine Ausflüge gefunden
+              </h3>
+              <p className="text-gray-600">
+                Versuche deine Suchkriterien zu ändern oder{' '}
+                <button onClick={resetFilters} className="text-emerald-600 hover:underline">
+                  alle Filter zurücksetzen
+                </button>
+              </p>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredExcursions.map((excursion) => (
+                <Card key={excursion.id} className="card-hover border-0 shadow-lg overflow-hidden">
+                  <div className="relative h-48 bg-gradient-to-br from-emerald-400 to-teal-500">
+                    {excursion.photos && excursion.photos.length > 0 ? (
+                      <img
+                        src={`${BACKEND_URL}/uploads/photos/${excursion.photos[0]}`}
+                        alt={excursion.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        {getIcon(excursion.category)}
+                      </div>
+                    )}
+                    <div className="absolute top-3 right-3">
+                      <Badge className="bg-white/90 text-emerald-700 hover:bg-white">
+                        {excursion.canton}
+                      </Badge>
                     </div>
-                  )}
-                  <div className="absolute top-3 right-3">
-                    <Badge className="bg-white/90 text-emerald-700 hover:bg-white">
-                      {excursion.canton}
-                    </Badge>
-                  </div>
-                </div>
-                
-                <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg text-gray-900 mb-2 line-clamp-2">
-                    {excursion.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                    {excursion.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between mb-4">
-                    <Badge variant="outline" className="text-xs">
-                      {excursion.category.replace('_', ' ')}
-                    </Badge>
-                    {renderRating(excursion.average_rating, excursion.review_count)}
                   </div>
                   
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {excursion.is_free && (
-                      <Badge className="bg-green-100 text-green-800 text-xs">
-                        Gratis
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold text-lg text-gray-900 mb-2 line-clamp-2">
+                      {excursion.title}
+                    </h3>
+                    
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                      {excursion.description}
+                    </p>
+                    
+                    <div className="flex items-center justify-between mb-4">
+                      <Badge variant="outline" className="text-xs">
+                        {excursion.category.replace('_', ' ')}
                       </Badge>
-                    )}
-                    {excursion.has_grill && (
-                      <Badge className="bg-orange-100 text-orange-800 text-xs">
-                        Grillstelle
-                      </Badge>
-                    )}
-                    {excursion.is_outdoor && (
-                      <Badge className="bg-blue-100 text-blue-800 text-xs">
-                        Outdoor
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  <div className="text-sm text-gray-600 mb-4">
-                    <span className="font-medium">Von:</span> {excursion.author_name}
-                  </div>
-                  
-                  <Link to={`/ausflug/${excursion.id}`}>
-                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 btn-hover">
-                      Details ansehen
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                      {renderRating(excursion.average_rating, excursion.review_count)}
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {excursion.is_free && (
+                        <Badge className="bg-green-100 text-green-800 text-xs">
+                          Gratis
+                        </Badge>
+                      )}
+                      {excursion.has_grill && (
+                        <Badge className="bg-orange-100 text-orange-800 text-xs">
+                          Grillstelle
+                        </Badge>
+                      )}
+                      {excursion.is_outdoor && (
+                        <Badge className="bg-blue-100 text-blue-800 text-xs">
+                          Outdoor
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    <div className="text-sm text-gray-600 mb-4">
+                      <span className="font-medium">Von:</span> {excursion.author_name}
+                    </div>
+                    
+                    <Link to={`/ausflug/${excursion.id}`}>
+                      <Button className="w-full bg-emerald-600 hover:bg-emerald-700 btn-hover">
+                        Details ansehen
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )
         )}
       </div>
     </div>
