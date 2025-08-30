@@ -521,7 +521,24 @@ async def get_excursions(
         query["has_grill"] = has_grill
     
     excursions = await db.excursions.find(query).sort("created_at", -1).to_list(length=None)
-    return [Excursion(**exc) for exc in excursions]
+    
+    # Handle backward compatibility - convert old canton field to new country/region format
+    processed_excursions = []
+    for exc in excursions:
+        # Migrate old format to new format if needed
+        if "canton" in exc and "country" not in exc:
+            exc["country"] = "Schweiz"  # Old data was Switzerland only
+            exc["region"] = exc.get("canton", "")
+        
+        # Ensure required fields exist
+        if "country" not in exc:
+            exc["country"] = "Schweiz"
+        if "region" not in exc:
+            exc["region"] = exc.get("canton", "Zürich")
+            
+        processed_excursions.append(Excursion(**exc))
+    
+    return processed_excursions
 
 @api_router.get("/excursions/{excursion_id}", response_model=Excursion)
 async def get_excursion(excursion_id: str):
