@@ -24,31 +24,8 @@ const MapView = ({ excursions, filters }) => {
   }, [excursions, map]);
 
   const initializeMap = async () => {
-    try {
-      const loader = new Loader({
-        apiKey: "AIzaSyBdVl-cGnaq0C59GJ2aHWKRcYzxTsNjo7A", // Demo key
-        version: "weekly",
-        libraries: ["places", "geometry"]
-      });
-
-      const google = await loader.load();
-      
-      const mapInstance = new google.maps.Map(mapRef.current, {
-        center: { lat: 46.8182, lng: 8.2275 }, // Switzerland center
-        zoom: 8,
-        styles: [
-          {
-            featureType: "poi",
-            elementType: "labels.text",
-            stylers: [{ visibility: "off" }]
-          }
-        ]
-      });
-
-      setMap(mapInstance);
-    } catch (error) {
-      console.error('Failed to load Google Maps:', error);
-    }
+    console.warn('Google Maps disabled - API key needed');
+    // For demo purposes, show a placeholder
   };
 
   const updateMarkers = async () => {
