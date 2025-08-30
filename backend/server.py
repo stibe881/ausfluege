@@ -317,10 +317,13 @@ async def login_user(credentials: UserLogin):
         data={"sub": user.id}, expires_delta=access_token_expires
     )
     
+    user_dict = user.dict()
+    user_dict['created_at'] = user_dict['created_at'].isoformat() if user_dict.get('created_at') else None
+    
     response = JSONResponse({
         "access_token": access_token,
         "token_type": "bearer", 
-        "user": user.dict()
+        "user": user_dict
     })
     
     response.set_cookie(
