@@ -112,7 +112,7 @@ const LoginModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Traditional Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {!isLogin && (
               <div>
                 <Label htmlFor="name" className="text-sm font-medium text-gray-700">
