@@ -53,7 +53,35 @@ const AddExcursion = () => {
     }
     
     loadOptions();
+    initializeGoogleMaps();
   }, [isAuthenticated, navigate]);
+
+  const initializeGoogleMaps = async () => {
+    try {
+      const loader = new Loader({
+        apiKey: "AIzaSyBdVl-cGnaq0C59GJ2aHWKRcYzxTsNjo7A", // Demo key - should be replaced
+        version: "weekly",
+        libraries: ["places"]
+      });
+
+      const google = await loader.load();
+      
+      // Create a dummy map element for services
+      const mapElement = document.createElement('div');
+      const map = new google.maps.Map(mapElement, {
+        center: { lat: 46.8182, lng: 8.2275 }, // Switzerland center
+        zoom: 8
+      });
+
+      const placesService = new google.maps.places.PlacesService(map);
+      const autocompleteService = new google.maps.places.AutocompleteService();
+      
+      setPlacesService(placesService);
+      setAutocompleteService(autocompleteService);
+    } catch (error) {
+      console.warn('Google Maps failed to load:', error);
+    }
+  };
 
   const loadOptions = async () => {
     try {
