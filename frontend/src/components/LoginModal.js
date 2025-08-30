@@ -119,8 +119,12 @@ const LoginModal = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Traditional Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-3">
+          {/* Traditional Login Form - Option 2 */}
+          <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <h3 className="font-semibold text-gray-800 mb-3 text-center">
+              📧 Email & Passwort
+            </h3>
+            <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
               <div>
                 <Label htmlFor="name" className="text-sm font-medium text-gray-700">
