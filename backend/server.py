@@ -743,6 +743,17 @@ async def get_user_reviews(current_user: User = Depends(get_current_user)):
     reviews = await db.reviews.find({"user_id": current_user.id}).sort("created_at", -1).to_list(length=None)
     return [Review(**review) for review in reviews]
 
+def get_region_options_for_country(country: str):
+    """Get region options based on country"""
+    region_mapping = {
+        Country.CH.value: [(region.name, region.value) for region in SwissCantons],
+        Country.DE.value: [(region.name, region.value) for region in GermanStates],
+        Country.IT.value: [(region.name, region.value) for region in ItalianRegions],
+        Country.FR.value: [(region.name, region.value) for region in FrenchRegions],
+        Country.AT.value: [(region.name, region.value) for region in AustrianStates]
+    }
+    return region_mapping.get(country, [])
+
 # Utility Routes
 @api_router.get("/cantons")
 async def get_cantons():
