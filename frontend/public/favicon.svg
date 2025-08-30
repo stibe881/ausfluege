@@ -1,0 +1,34 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="16" fill="url(#bgGradient)"/>
+  
+  <!-- Mountain peaks -->
+  <path d="M4 22L8 16L12 18L16 12L20 15L24 10L28 12V28H4V22Z" fill="url(#mountainGradient)"/>
+  
+  <!-- Hiking trail -->
+  <path d="M6 24Q12 22 18 23T28 24" stroke="#FFFFFF" stroke-width="1.5" fill="none" stroke-dasharray="2,2" opacity="0.8"/>
+  
+  <!-- Tree -->
+  <circle cx="10" cy="20" r="1.5" fill="#FFFFFF" opacity="0.9"/>
+  <rect x="9.5" y="20" width="1" height="3" fill="#FFFFFF" opacity="0.7"/>
+  
+  <!-- Sun -->
+  <circle cx="22" cy="8" r="3" fill="#FCD34D"/>
+  <path d="M22 3L22.5 6M27 8L24.5 8M25.5 5L23.5 7M25.5 11L23.5 9M22 13L22.5 10M19.5 11L21.5 9M19.5 5L21.5 7M17 8L19.5 8" stroke="#FCD34D" stroke-width="0.5" stroke-linecap="round"/>
+  
+  <!-- Letter "A" for AusflugFinder -->
+  <path d="M14 26L16 20L18 26M14.8 24H17.2" stroke="#FFFFFF" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    
+    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#065F46" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#047857" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+</svg>
