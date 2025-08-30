@@ -476,6 +476,103 @@ const EditExcursion = () => {
                 </div>
               </div>
 
+              {/* Photo Management */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Fotos verwalten</h3>
+                
+                {/* Current Photos */}
+                {currentPhotos.length > 0 && (
+                  <div className="mb-6">
+                    <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Aktuelle Fotos
+                    </Label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {currentPhotos.map((photo) => (
+                        <div key={photo} className="relative group">
+                          <img
+                            src={`${BACKEND_URL}/uploads/photos/${photo}`}
+                            alt="Ausflug"
+                            className="w-full h-24 object-cover rounded-lg border"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeCurrentPhoto(photo)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* New Photos */}
+                <div className="mb-4">
+                  <Label htmlFor="new_photos" className="text-sm font-medium text-gray-700 mb-2 block">
+                    Neue Fotos hinzufügen
+                  </Label>
+                  <div className="border-2 border-dashed border-emerald-300 rounded-lg p-6 upload-area">
+                    <div className="text-center">
+                      <Upload className="w-8 h-8 text-emerald-600 mx-auto mb-3" />
+                      <Label htmlFor="new_photos" className="cursor-pointer">
+                        <span className="text-emerald-600 hover:text-emerald-700 font-medium">
+                          Fotos auswählen
+                        </span>
+                        <span className="text-gray-600"> oder hierhin ziehen</span>
+                      </Label>
+                      <Input
+                        id="new_photos"
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleNewPhotos}
+                        className="hidden"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Preview New Photos */}
+                {newPhotos.length > 0 && (
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Neue Fotos ({newPhotos.length})
+                    </Label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {newPhotos.map((photo, index) => (
+                        <div key={index} className="relative group">
+                          <img
+                            src={URL.createObjectURL(photo)}
+                            alt="Neues Foto"
+                            className="w-full h-24 object-cover rounded-lg border border-emerald-200"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeNewPhoto(index)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                          <div className="absolute bottom-1 left-1 bg-emerald-600 text-white text-xs px-1 rounded">
+                            Neu
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {photosToDelete.length > 0 && (
+                  <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-700 text-sm">
+                      <Trash2 className="w-4 h-4 inline mr-1" />
+                      {photosToDelete.length} Foto{photosToDelete.length !== 1 ? 's' : ''} wird beim Speichern gelöscht
+                    </p>
+                  </div>
+                )}
+              </div>
+
               {/* Submit Button */}
               <div className="flex justify-end space-x-4 pt-6 border-t">
                 <Button 
