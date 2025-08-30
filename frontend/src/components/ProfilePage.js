@@ -1,8 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../App';
-import { Navigate } from 'react-router-dom';
-import { User, MapPin, Star, Calendar } from 'lucide-react';
+import { Navigate, Link } from 'react-router-dom';
+import { User, MapPin, Star, Calendar, Edit, Eye, MessageCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const ProfilePage = () => {
   const { user, isAuthenticated, loading } = useContext(AuthContext);
