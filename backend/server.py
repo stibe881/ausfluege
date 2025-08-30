@@ -499,15 +499,18 @@ async def get_me(current_user: User = Depends(get_current_user)):
 # Excursion Routes
 @api_router.get("/excursions", response_model=List[Excursion])
 async def get_excursions(
-    canton: Optional[Canton] = None,
+    country: Optional[str] = None,
+    region: Optional[str] = None,
     category: Optional[Category] = None,
     is_free: Optional[bool] = None,
     is_outdoor: Optional[bool] = None,
     has_grill: Optional[bool] = None
 ):
     query = {}
-    if canton:
-        query["canton"] = canton
+    if country:
+        query["country"] = country
+    if region:
+        query["region"] = region
     if category:
         query["category"] = category
     if is_free is not None:
