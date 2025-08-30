@@ -97,15 +97,20 @@ const LoginModal = ({ isOpen, onClose }) => {
           </CardHeader>
           
           <CardContent className="space-y-5 px-8 pb-8 bg-white">
-          {/* OAuth Login Button */}
-          <Button
-            onClick={handleOAuthLogin}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-            size="lg"
-          >
-            <User className="w-4 h-4 mr-2" />
-            Mit Emergent {isLogin ? 'anmelden' : 'registrieren'}
-          </Button>
+          {/* OAuth Login Button - Option 1 */}
+          <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+            <h3 className="font-semibold text-emerald-800 mb-2 text-center">
+              🚀 Schnell & Einfach
+            </h3>
+            <Button
+              onClick={handleOAuthLogin}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg"
+              size="lg"
+            >
+              <User className="w-5 h-5 mr-2" />
+              Mit Emergent {isLogin ? 'anmelden' : 'registrieren'}
+            </Button>
+          </div>
 
           <div className="relative my-3">
             <Separator />
