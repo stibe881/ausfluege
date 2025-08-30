@@ -69,12 +69,23 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="hero-gradient text-white py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6 fade-in">
+      <section className="relative text-white py-20 px-4 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1654063998396-dbea6cd91cfb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            alt="Schweizer Berglandschaft"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/80 via-emerald-800/70 to-teal-800/70"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-6xl mx-auto text-center">
+          <h1 className="text-5xl font-bold mb-6 fade-in drop-shadow-lg">
             Entdecke die schönsten Ausflüge der Schweiz
           </h1>
-          <p className="text-xl mb-8 text-emerald-100 max-w-3xl mx-auto">
+          <p className="text-xl mb-8 text-white/90 max-w-3xl mx-auto drop-shadow-md">
             Finde und teile die besten Ausflugsziele in allen Kantonen. Von Wanderungen bis Freizeitparks - 
             entdecke neue Abenteuer und bewerte deine Erfahrungen.
           </p>
