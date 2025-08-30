@@ -105,6 +105,97 @@ const AddExcursion = () => {
       ...prev,
       [name]: value
     }));
+    
+    // Handle title changes for place suggestions
+    if (name === 'title' && value.length > 2 && autocompleteService) {
+      searchPlaces(value);
+    } else if (name === 'title') {
+      setPlaceSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const searchPlaces = (query) => {
+    if (!autocompleteService) return;
+    
+    autocompleteService.getPlacePredictions({
+      input: query,
+      componentRestrictions: { country: 'ch' }, // Restrict to Switzerland
+      types: ['tourist_attraction', 'amusement_park', 'park', 'point_of_interest']
+    }, (predictions, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+        setPlaceSuggestions(predictions.slice(0, 5)); // Show top 5 suggestions
+        setShowSuggestions(true);
+      } else {
+        setPlaceSuggestions([]);
+        setShowSuggestions(false);
+      }
+    });
+  };
+
+  const selectPlace = (placeId, description) => {
+    if (!placesService) return;
+    
+    placesService.getDetails({
+      placeId: placeId,
+      fields: ['name', 'formatted_address', 'website', 'photos', 'types', 'geometry']
+    }, (place, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        // Auto-fill form with place data
+        setFormData(prev => ({
+          ...prev,
+          title: place.name,
+          address: place.formatted_address,
+          website_url: place.website || '',
+          // Try to determine category based on place types
+          category: determineCategory(place.types)
+        }));
+        
+        // Try to determine canton from address
+        const canton = extractCantonFromAddress(place.formatted_address);
+        if (canton) {
+          setFormData(prev => ({ ...prev, canton }));
+        }
+        
+        setShowSuggestions(false);
+        toast.success('Informationen automatisch ausgefüllt!');
+      }
+    });
+  };
+
+  const determineCategory = (types) => {
+    const typeMapping = {
+      'amusement_park': 'AMUSEMENT_PARK',
+      'zoo': 'ZOO',
+      'museum': 'MUSEUM',
+      'restaurant': 'RESTAURANT',
+      'tourist_attraction': 'OTHER',
+      'natural_feature': 'HIKING',
+      'park': 'HIKING'
+    };
+    
+    for (const type of types) {
+      if (typeMapping[type]) {
+        return typeMapping[type];
+      }
+    }
+    return 'OTHER';
+  };
+
+  const extractCantonFromAddress = (address) => {
+    const cantonMapping = {
+      'Zürich': 'ZH', 'Bern': 'BE', 'Luzern': 'LU', 'Basel': 'BS', 
+      'St. Gallen': 'SG', 'Aargau': 'AG', 'Thurgau': 'TG', 'Genève': 'GE', 
+      'Vaud': 'VD', 'Valais': 'VS', 'Graubünden': 'GR', 'Ticino': 'TI',
+      'Fribourg': 'FR', 'Solothurn': 'SO', 'Schaffhausen': 'SH', 'Zug': 'ZG'
+    };
+    
+    for (const [name, code] of Object.entries(cantonMapping)) {
+      if (address.includes(name)) {
+        return code;
+      }
+    }
+    return '';
   };
 
   const handlePhotoChange = (e) => {
