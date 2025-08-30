@@ -453,23 +453,35 @@ async def create_excursion(
     excursion_data: ExcursionCreate,
     current_user: User = Depends(get_current_user)
 ):
-    # Convert frontend enum keys to backend enum values if needed
+    # Convert frontend enum keys to backend enum values
     excursion_dict = excursion_data.dict()
     
     # Map canton keys to values
     canton_map = {canton.name: canton.value for canton in Canton}
+    canton_reverse_map = {canton.value: canton.value for canton in Canton}
+    
     if excursion_dict['canton'] in canton_map:
         excursion_dict['canton'] = canton_map[excursion_dict['canton']]
+    elif excursion_dict['canton'] not in canton_reverse_map:
+        raise HTTPException(status_code=400, detail=f"Invalid canton: {excursion_dict['canton']}")
     
     # Map category keys to values  
     category_map = {category.name: category.value for category in Category}
+    category_reverse_map = {category.value: category.value for category in Category}
+    
     if excursion_dict['category'] in category_map:
         excursion_dict['category'] = category_map[excursion_dict['category']]
+    elif excursion_dict['category'] not in category_reverse_map:
+        raise HTTPException(status_code=400, detail=f"Invalid category: {excursion_dict['category']}")
         
     # Map parking situation keys to values
     parking_map = {parking.name: parking.value for parking in ParkingSituation}
+    parking_reverse_map = {parking.value: parking.value for parking in ParkingSituation}
+    
     if excursion_dict['parking_situation'] in parking_map:
         excursion_dict['parking_situation'] = parking_map[excursion_dict['parking_situation']]
+    elif excursion_dict['parking_situation'] not in parking_reverse_map:
+        raise HTTPException(status_code=400, detail=f"Invalid parking situation: {excursion_dict['parking_situation']}")
     
     excursion = Excursion(
         **excursion_dict,
