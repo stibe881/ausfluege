@@ -9,6 +9,7 @@ import HomePage from './components/HomePage';
 import ExcursionList from './components/ExcursionList';
 import ExcursionDetail from './components/ExcursionDetail';
 import AddExcursion from './components/AddExcursion';
+import EditExcursion from './components/EditExcursion';
 import ProfilePage from './components/ProfilePage';
 import { Toaster } from './components/ui/sonner';
 
