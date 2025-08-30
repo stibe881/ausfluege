@@ -453,8 +453,26 @@ async def create_excursion(
     excursion_data: ExcursionCreate,
     current_user: User = Depends(get_current_user)
 ):
+    # Convert frontend enum keys to backend enum values if needed
+    excursion_dict = excursion_data.dict()
+    
+    # Map canton keys to values
+    canton_map = {canton.name: canton.value for canton in Canton}
+    if excursion_dict['canton'] in canton_map:
+        excursion_dict['canton'] = canton_map[excursion_dict['canton']]
+    
+    # Map category keys to values  
+    category_map = {category.name: category.value for category in Category}
+    if excursion_dict['category'] in category_map:
+        excursion_dict['category'] = category_map[excursion_dict['category']]
+        
+    # Map parking situation keys to values
+    parking_map = {parking.name: parking.value for parking in ParkingSituation}
+    if excursion_dict['parking_situation'] in parking_map:
+        excursion_dict['parking_situation'] = parking_map[excursion_dict['parking_situation']]
+    
     excursion = Excursion(
-        **excursion_data.dict(),
+        **excursion_dict,
         author_id=current_user.id,
         author_name=current_user.name
     )
