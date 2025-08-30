@@ -168,10 +168,40 @@ const ExcursionList = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Alle Ausflüge</h1>
-          <p className="text-gray-600">
-            Entdecke {excursions.length} Ausflugsziele in der ganzen Schweiz
-          </p>
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Alle Ausflüge</h1>
+              <p className="text-gray-600">
+                Entdecke {excursions.length} Ausflugsziele in der ganzen Schweiz
+              </p>
+            </div>
+            
+            {/* View Mode Toggle */}
+            <div className="flex bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('list')}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  viewMode === 'list'
+                    ? 'bg-white text-emerald-700 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <List className="w-4 h-4" />
+                <span>Liste</span>
+              </button>
+              <button
+                onClick={() => setViewMode('map')}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  viewMode === 'map'
+                    ? 'bg-white text-emerald-700 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Map className="w-4 h-4" />
+                <span>Karte</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Search and Filters */}
