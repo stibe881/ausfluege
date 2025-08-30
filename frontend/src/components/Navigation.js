@@ -81,7 +81,7 @@ const Navigation = () => {
               </div>
             ) : (
               <Button
-                onClick={login}
+                onClick={openLoginModal}
                 className="bg-emerald-600 hover:bg-emerald-700 text-white btn-hover"
               >
                 <User className="w-4 h-4 mr-2" />
