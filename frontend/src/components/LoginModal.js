@@ -213,14 +213,14 @@ const LoginModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Switch Mode */}
-          <div className="text-center pt-3 border-t mt-4">
-            <p className="text-sm text-gray-600">
+          <div className="text-center pt-4 border-t mt-6 bg-white">
+            <p className="text-base text-gray-700">
               {isLogin ? 'Noch kein Konto?' : 'Bereits ein Konto?'}
               <button
                 onClick={switchMode}
-                className="ml-2 text-emerald-600 hover:text-emerald-700 font-medium"
+                className="ml-2 text-emerald-600 hover:text-emerald-700 font-bold underline"
               >
-                {isLogin ? 'Registrieren' : 'Anmelden'}
+                {isLogin ? 'Hier registrieren' : 'Hier anmelden'}
               </button>
             </p>
           </div>
