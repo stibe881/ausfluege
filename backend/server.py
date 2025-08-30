@@ -493,6 +493,81 @@ async def create_excursion(
     await db.excursions.insert_one(excursion_dict)
     return excursion
 
+@api_router.put("/excursions/{excursion_id}", response_model=Excursion)
+async def update_excursion(
+    excursion_id: str,
+    excursion_data: ExcursionCreate,
+    current_user: User = Depends(get_current_user)
+):
+    # Check if excursion exists and user owns it
+    existing_excursion = await db.excursions.find_one({"id": excursion_id})
+    if not existing_excursion:
+        raise HTTPException(status_code=404, detail="Excursion not found")
+    
+    if existing_excursion["author_id"] != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to update this excursion")
+    
+    # Convert enum keys to values (same logic as create)
+    excursion_dict = excursion_data.dict()
+    
+    # Map canton keys to values
+    canton_map = {canton.name: canton.value for canton in Canton}
+    canton_reverse_map = {canton.value: canton.value for canton in Canton}
+    
+    if excursion_dict['canton'] in canton_map:
+        excursion_dict['canton'] = canton_map[excursion_dict['canton']]
+    elif excursion_dict['canton'] not in canton_reverse_map:
+        raise HTTPException(status_code=400, detail=f"Invalid canton: {excursion_dict['canton']}")
+    
+    # Map category keys to values  
+    category_map = {category.name: category.value for category in Category}
+    category_reverse_map = {category.value: category.value for category in Category}
+    
+    if excursion_dict['category'] in category_map:
+        excursion_dict['category'] = category_map[excursion_dict['category']]
+    elif excursion_dict['category'] not in category_reverse_map:
+        raise HTTPException(status_code=400, detail=f"Invalid category: {excursion_dict['category']}")
+        
+    # Map parking situation keys to values
+    parking_map = {parking.name: parking.value for parking in ParkingSituation}
+    parking_reverse_map = {parking.value: parking.value for parking in ParkingSituation}
+    
+    if excursion_dict['parking_situation'] in parking_map:
+        excursion_dict['parking_situation'] = parking_map[excursion_dict['parking_situation']]
+    elif excursion_dict['parking_situation'] not in parking_reverse_map:
+        raise HTTPException(status_code=400, detail=f"Invalid parking situation: {excursion_dict['parking_situation']}")
+    
+    # Update excursion in database
+    await db.excursions.update_one(
+        {"id": excursion_id},
+        {"$set": excursion_dict}
+    )
+    
+    # Return updated excursion
+    updated_excursion = await db.excursions.find_one({"id": excursion_id})
+    return Excursion(**updated_excursion)
+
+@api_router.delete("/excursions/{excursion_id}")
+async def delete_excursion(
+    excursion_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    # Check if excursion exists and user owns it
+    excursion = await db.excursions.find_one({"id": excursion_id})
+    if not excursion:
+        raise HTTPException(status_code=404, detail="Excursion not found")
+    
+    if excursion["author_id"] != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this excursion")
+    
+    # Delete all reviews for this excursion
+    await db.reviews.delete_many({"excursion_id": excursion_id})
+    
+    # Delete the excursion
+    await db.excursions.delete_one({"id": excursion_id})
+    
+    return {"message": "Excursion deleted successfully"}
+
 @api_router.post("/excursions/{excursion_id}/photos")
 async def upload_photos(
     excursion_id: str,
