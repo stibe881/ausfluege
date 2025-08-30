@@ -192,13 +192,13 @@ class AusflugFinderAPITester:
             "title": "Test Wanderung JWT",
             "description": "Eine schöne Testwanderung für JWT Authentication",
             "address": "Teststraße 123, 8001 Zürich",
-            "canton": "ZH",
-            "category": "HIKING",
+            "canton": "Zürich",
+            "category": "Wanderung",
             "website_url": "https://test.example.com",
             "has_grill": True,
             "is_outdoor": True,
             "is_free": True,
-            "parking_situation": "GOOD",
+            "parking_situation": "Gut",
             "parking_is_free": True
         }
         
