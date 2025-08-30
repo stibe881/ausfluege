@@ -475,7 +475,7 @@ class AusflugFinderAPITester:
 
 def main():
     print("🚀 Starting COMPREHENSIVE AusflugFinder API Tests...")
-    print("🔐 Testing DUAL AUTHENTICATION SYSTEM")
+    print("🔐 Testing DUAL AUTHENTICATION SYSTEM + PROFILE & EDIT FUNCTIONALITY")
     
     tester = AusflugFinderAPITester()
     
@@ -491,17 +491,23 @@ def main():
         
         # Test data persistence
         tester.test_data_persistence()
+        
+        # Test profile and edit functionality
+        tester.test_profile_and_edit_functionality()
+        
+        # Test delete functionality (this will delete the test excursion)
+        tester.test_delete_functionality()
     
     # Print final results
     print(f"\n📊 COMPREHENSIVE API Tests Summary:")
     print(f"Tests passed: {tester.tests_passed}/{tester.tests_run}")
     
     if tester.tests_passed == tester.tests_run:
-        print("✅ ALL API TESTS PASSED! Dual authentication system working perfectly.")
+        print("✅ ALL API TESTS PASSED! Profile and edit functionality working perfectly.")
         return 0
     else:
         failed_tests = tester.tests_run - tester.tests_passed
-        print(f"❌ {failed_tests} API tests failed. Check authentication implementation.")
+        print(f"❌ {failed_tests} API tests failed. Check implementation.")
         return 1
 
 if __name__ == "__main__":
