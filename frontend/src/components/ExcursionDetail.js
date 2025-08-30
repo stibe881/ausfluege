@@ -231,7 +231,7 @@ const ExcursionDetail = () => {
                   )}
                   {excursion.has_grill && (
                     <Badge className="bg-orange-100 text-orange-800">
-                      <Grill className="w-3 h-3 mr-1" />
+                      <Flame className="w-3 h-3 mr-1" />
                       Grillstelle
                     </Badge>
                   )}
