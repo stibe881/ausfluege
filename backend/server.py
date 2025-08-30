@@ -38,8 +38,16 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 7 * 24 * 60  # 7 days
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
-# Swiss Cantons Enum
-class Canton(str, Enum):
+# Countries Enum
+class Country(str, Enum):
+    CH = "Schweiz"
+    DE = "Deutschland"
+    IT = "Italien"
+    FR = "Frankreich"
+    AT = "Österreich"
+
+# Swiss Cantons
+class SwissCantons(str, Enum):
     AG = "Aargau"
     AI = "Appenzell Innerrhoden"
     AR = "Appenzell Ausserrhoden"
@@ -66,6 +74,76 @@ class Canton(str, Enum):
     VS = "Wallis"
     ZG = "Zug"
     ZH = "Zürich"
+
+# German Bundesländer
+class GermanStates(str, Enum):
+    BW = "Baden-Württemberg"
+    BY = "Bayern"
+    BE = "Berlin"
+    BB = "Brandenburg"
+    HB = "Bremen"
+    HH = "Hamburg"
+    HE = "Hessen"
+    MV = "Mecklenburg-Vorpommern"
+    NI = "Niedersachsen"
+    NW = "Nordrhein-Westfalen"
+    RP = "Rheinland-Pfalz"
+    SL = "Saarland"
+    SN = "Sachsen"
+    ST = "Sachsen-Anhalt"
+    SH = "Schleswig-Holstein"
+    TH = "Thüringen"
+
+# Italian Regions
+class ItalianRegions(str, Enum):
+    ABR = "Abruzzen"
+    BAS = "Basilikata"
+    CAL = "Kalabrien"
+    CAM = "Kampanien"
+    EMR = "Emilia-Romagna"
+    FVG = "Friaul-Julisch Venetien"
+    LAZ = "Latium"
+    LIG = "Ligurien"
+    LOM = "Lombardei"
+    MAR = "Marken"
+    MOL = "Molise"
+    PIE = "Piemont"
+    PUG = "Apulien"
+    SAR = "Sardinien"
+    SIC = "Sizilien"
+    TOS = "Toskana"
+    TAA = "Trentino-Südtirol"
+    UMB = "Umbrien"
+    VAL = "Aostatal"
+    VEN = "Venetien"
+
+# French Regions
+class FrenchRegions(str, Enum):
+    ARA = "Auvergne-Rhône-Alpes"
+    BFC = "Burgund-Franche-Comté"
+    BRE = "Bretagne"
+    CVL = "Centre-Val de Loire"
+    COR = "Korsika"
+    GES = "Grand Est"
+    HDF = "Hauts-de-France"
+    IDF = "Île-de-France"
+    NOR = "Normandie"
+    NAQ = "Nouvelle-Aquitaine"
+    OCC = "Okzitanien"
+    PDL = "Pays de la Loire"
+    PAC = "Provence-Alpes-Côte d'Azur"
+
+# Austrian States
+class AustrianStates(str, Enum):
+    BGL = "Burgenland"
+    KTN = "Kärnten"
+    NÖ = "Niederösterreich"
+    OÖ = "Oberösterreich"
+    SBG = "Salzburg"
+    STK = "Steiermark"
+    TIR = "Tirol"
+    VLB = "Vorarlberg"
+    WIE = "Wien"
 
 # Categories Enum
 class Category(str, Enum):
