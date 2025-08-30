@@ -583,6 +583,12 @@ async def create_review(
     
     return review
 
+# User Routes
+@api_router.get("/user/reviews", response_model=List[Review])
+async def get_user_reviews(current_user: User = Depends(get_current_user)):
+    reviews = await db.reviews.find({"user_id": current_user.id}).sort("created_at", -1).to_list(length=None)
+    return [Review(**review) for review in reviews]
+
 # Utility Routes
 @api_router.get("/cantons")
 async def get_cantons():
