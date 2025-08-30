@@ -175,6 +175,11 @@ const Navigation = () => {
           </div>
         )}
       </div>
+      
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)} 
+      />
     </nav>
   );
 };
