@@ -177,6 +177,15 @@ def parse_from_mongo(item: dict) -> dict:
         item['expires_at'] = datetime.fromisoformat(item['expires_at'])
     return item
 
+# Add your routes to the router instead of directly to app
+@api_router.get("/")
+async def root():
+    return {"message": "AusflugFinder API is running"}
+
+@api_router.get("/health")
+async def health():
+    return {"status": "healthy"}
+
 # Authentication Routes
 @api_router.post("/auth/profile")
 async def handle_auth_callback(request: Request):
