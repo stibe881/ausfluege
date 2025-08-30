@@ -233,8 +233,7 @@ const LoginModal = ({ isOpen, onClose }) => {
               </button>
             </p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
       </div>
     </div>
   );
