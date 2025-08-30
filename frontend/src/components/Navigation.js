@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../App';
 import { Menu, X, MapPin, Plus, List, Home, User, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
+import LoginModal from './LoginModal';
 
 const Navigation = () => {
   const { user, login, logout, isAuthenticated } = useContext(AuthContext);
