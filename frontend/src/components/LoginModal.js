@@ -71,9 +71,12 @@ const LoginModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
-      <div className="w-full max-w-md my-8">
-        <Card className="w-full border-0 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div 
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-[9999] overflow-y-auto"
+      style={{ zIndex: 9999 }}
+    >
+      <div className="w-full max-w-lg my-8 relative">
+        <Card className="w-full border shadow-2xl bg-white relative z-[10000]">
           <CardHeader className="relative pb-3 px-6 pt-6">
             <button
               onClick={onClose}
