@@ -403,6 +403,9 @@ const ExcursionDetail = () => {
                   <div>
                     <p className="font-medium text-gray-900">Adresse</p>
                     <p className="text-gray-600">{excursion.address}</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {excursion.region || excursion.canton}, {excursion.country || 'Schweiz'}
+                    </p>
                   </div>
                 </div>
 
