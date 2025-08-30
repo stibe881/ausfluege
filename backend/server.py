@@ -30,6 +30,11 @@ db = client[os.environ['DB_NAME']]
 UPLOAD_DIR = ROOT_DIR / "uploads" / "photos"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
+# JWT Configuration
+SECRET_KEY = os.environ.get('SECRET_KEY', secrets.token_urlsafe(32))
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 7 * 24 * 60  # 7 days
+
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
