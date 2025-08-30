@@ -226,7 +226,7 @@ const AddExcursion = () => {
     try {
       // Validate required fields
       if (!formData.title || !formData.description || !formData.address || 
-          !formData.canton || !formData.category || !formData.parking_situation) {
+          !formData.country || !formData.region || !formData.category || !formData.parking_situation) {
         toast.error('Bitte fülle alle Pflichtfelder aus');
         setLoading(false);
         return;
