@@ -31,11 +31,16 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       const response = await axios.get(`${API}/auth/me`, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
       });
       setUser(response.data);
+      console.log('User authenticated:', response.data.name);
     } catch (error) {
-      console.log('Not authenticated');
+      console.log('Not authenticated:', error.response?.status);
+      setUser(null);
     } finally {
       setLoading(false);
     }
