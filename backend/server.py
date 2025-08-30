@@ -248,6 +248,91 @@ async def health():
     return {"status": "healthy"}
 
 # Authentication Routes
+
+# Traditional Login/Register
+@api_router.post("/auth/register", response_model=Token)
+async def register_user(user_data: UserCreate):
+    # Check if user already exists
+    existing_user = await db.users.find_one({"email": user_data.email})
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # Create new user
+    hashed_password = hash_password(user_data.password)
+    user = User(
+        email=user_data.email,
+        name=user_data.name,
+        picture=f"https://ui-avatars.com/api/?name={user_data.name}&background=10b981&color=fff",
+        is_oauth=False
+    )
+    
+    # Store user with hashed password
+    user_dict = prepare_for_mongo(user.dict())
+    user_dict["password_hash"] = hashed_password
+    await db.users.insert_one(user_dict)
+    
+    # Create JWT token
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.id}, expires_delta=access_token_expires
+    )
+    
+    response = JSONResponse({
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": user.dict()
+    })
+    
+    response.set_cookie(
+        key="session_token",
+        value=access_token,
+        path="/",
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60
+    )
+    
+    return response
+
+@api_router.post("/auth/login", response_model=Token)
+async def login_user(credentials: UserLogin):
+    # Find user by email
+    user_doc = await db.users.find_one({"email": credentials.email})
+    if not user_doc or user_doc.get("is_oauth", False):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    # Verify password
+    if not verify_password(credentials.password, user_doc.get("password_hash", "")):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    user = User(**user_doc)
+    
+    # Create JWT token
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.id}, expires_delta=access_token_expires
+    )
+    
+    response = JSONResponse({
+        "access_token": access_token,
+        "token_type": "bearer", 
+        "user": user.dict()
+    })
+    
+    response.set_cookie(
+        key="session_token",
+        value=access_token,
+        path="/",
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60
+    )
+    
+    return response
+
+# OAuth Login (existing)
 @api_router.post("/auth/profile")
 async def handle_auth_callback(request: Request):
     data = await request.json()
