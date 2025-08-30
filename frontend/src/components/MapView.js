@@ -204,7 +204,7 @@ const MapView = ({ excursions, filters }) => {
                 <div key={excursion.id} className="flex items-center justify-between text-sm">
                   <span className="font-medium">{excursion.title}</span>
                   <Badge className="bg-emerald-100 text-emerald-800 text-xs">
-                    {excursion.canton}
+                    {excursion.region || excursion.canton}
                   </Badge>
                 </div>
               ))}
