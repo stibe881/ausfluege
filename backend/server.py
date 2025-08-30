@@ -631,17 +631,30 @@ async def update_excursion(
     if existing_excursion["author_id"] != current_user.id:
         raise HTTPException(status_code=403, detail="Not authorized to update this excursion")
     
-    # Convert enum keys to values (same logic as create)
+    # Convert and validate frontend data
     excursion_dict = excursion_data.dict()
     
-    # Map canton keys to values
-    canton_map = {canton.name: canton.value for canton in Canton}
-    canton_reverse_map = {canton.value: canton.value for canton in Canton}
+    # Validate country
+    country_map = {country.name: country.value for country in Country}
+    country_reverse_map = {country.value: country.value for country in Country}
     
-    if excursion_dict['canton'] in canton_map:
-        excursion_dict['canton'] = canton_map[excursion_dict['canton']]
-    elif excursion_dict['canton'] not in canton_reverse_map:
-        raise HTTPException(status_code=400, detail=f"Invalid canton: {excursion_dict['canton']}")
+    if excursion_dict['country'] in country_map:
+        excursion_dict['country'] = country_map[excursion_dict['country']]
+    elif excursion_dict['country'] not in country_reverse_map:
+        raise HTTPException(status_code=400, detail=f"Invalid country: {excursion_dict['country']}")
+    
+    # Validate region based on country
+    valid_regions = get_region_options_for_country(excursion_dict['country'])
+    region_values = [region[1] for region in valid_regions]  # Get values
+    region_keys = [region[0] for region in valid_regions]    # Get keys
+    
+    if excursion_dict['region'] not in region_values and excursion_dict['region'] not in region_keys:
+        raise HTTPException(status_code=400, detail=f"Invalid region for country {excursion_dict['country']}: {excursion_dict['region']}")
+    
+    # Convert region key to value if needed
+    if excursion_dict['region'] in region_keys:
+        region_index = region_keys.index(excursion_dict['region'])
+        excursion_dict['region'] = valid_regions[region_index][1]
     
     # Map category keys to values  
     category_map = {category.name: category.value for category in Category}
@@ -667,8 +680,19 @@ async def update_excursion(
         {"$set": excursion_dict}
     )
     
-    # Return updated excursion
+    # Return updated excursion with backward compatibility
     updated_excursion = await db.excursions.find_one({"id": excursion_id})
+    
+    # Handle backward compatibility for the response
+    if "canton" in updated_excursion and "country" not in updated_excursion:
+        updated_excursion["country"] = "Schweiz"
+        updated_excursion["region"] = updated_excursion.get("canton", "")
+    
+    if "country" not in updated_excursion:
+        updated_excursion["country"] = "Schweiz"
+    if "region" not in updated_excursion:
+        updated_excursion["region"] = updated_excursion.get("canton", "Zürich")
+        
     return Excursion(**updated_excursion)
 
 @api_router.delete("/excursions/{excursion_id}")
