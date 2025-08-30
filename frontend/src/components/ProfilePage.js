@@ -103,7 +103,7 @@ const ProfilePage = () => {
               <div className="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-6 h-6 text-emerald-600" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">0</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">{userExcursions.length}</h3>
               <p className="text-gray-600">Ausflüge hinzugefügt</p>
             </CardContent>
           </Card>
@@ -113,7 +113,7 @@ const ProfilePage = () => {
               <div className="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Star className="w-6 h-6 text-emerald-600" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">0</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">{userReviews.length}</h3>
               <p className="text-gray-600">Bewertungen geschrieben</p>
             </CardContent>
           </Card>
