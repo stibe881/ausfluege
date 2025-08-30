@@ -42,8 +42,13 @@ const LoginModal = ({ isOpen, onClose }) => {
 
       toast.success(isLogin ? 'Erfolgreich angemeldet!' : 'Konto erfolgreich erstellt!');
       
-      // Refresh auth state
-      await checkAuth();
+      // Refresh auth state  
+      if (checkAuth) {
+        await checkAuth();
+      } else {
+        // Fallback - reload page to refresh auth state
+        window.location.reload();
+      }
       
       // Close modal and reset form
       onClose();
