@@ -13,6 +13,10 @@ const Navigation = () => {
 
   const isActive = (path) => location.pathname === path;
 
+  const openLoginModal = () => {
+    setShowLoginModal(true);
+  };
+
   const navItems = [
     { path: '/', label: 'Startseite', icon: Home },
     { path: '/ausfluge', label: 'Ausflüge', icon: List },
