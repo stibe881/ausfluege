@@ -6,8 +6,9 @@ import { Button } from './ui/button';
 import LoginModal from './LoginModal';
 
 const Navigation = () => {
-  const { user, login, logout, isAuthenticated } = useContext(AuthContext);
+  const { user, logout, isAuthenticated } = useContext(AuthContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
