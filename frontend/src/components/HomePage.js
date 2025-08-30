@@ -16,6 +16,7 @@ const HomePage = () => {
   const [featuredExcursions, setFeaturedExcursions] = useState([]);
   const [stats, setStats] = useState({ total: 0, categories: 0, users: 0 });
   const [loading, setLoading] = useState(true);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     loadFeaturedExcursions();
