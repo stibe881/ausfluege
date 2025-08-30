@@ -279,16 +279,43 @@ const AddExcursion = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Basic Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 relative">
                   <Label htmlFor="title">Titel *</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => handleInputChange('title', e.target.value)}
-                    placeholder="z.B. Wanderung zum Matterhorn"
-                    className="mt-1"
-                    required
-                  />
+                  <div className="relative">
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => handleInputChange('title', e.target.value)}
+                      placeholder="z.B. Europa Park, Matterhorn, Rhine Falls..."
+                      className="mt-1"
+                      required
+                    />
+                    <Search className="absolute right-3 top-4 w-4 h-4 text-gray-400" />
+                  </div>
+                  
+                  {/* Place Suggestions */}
+                  {showSuggestions && placeSuggestions.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
+                      <div className="p-2 text-sm text-gray-600 bg-emerald-50 border-b">
+                        💡 Vorschläge von Google Places:
+                      </div>
+                      {placeSuggestions.map((suggestion) => (
+                        <button
+                          key={suggestion.place_id}
+                          type="button"
+                          onClick={() => selectPlace(suggestion.place_id, suggestion.description)}
+                          className="w-full p-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                        >
+                          <div className="font-medium text-gray-900">
+                            {suggestion.structured_formatting.main_text}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {suggestion.structured_formatting.secondary_text}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="md:col-span-2">
