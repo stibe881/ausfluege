@@ -112,10 +112,10 @@ const LoginModal = ({ isOpen, onClose }) => {
             </Button>
           </div>
 
-          <div className="relative my-3">
+          <div className="relative my-6">
             <Separator />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="bg-white px-3 text-gray-500 text-sm font-medium">oder</span>
+              <span className="bg-white px-4 text-gray-600 font-semibold">ODER</span>
             </div>
           </div>
 
