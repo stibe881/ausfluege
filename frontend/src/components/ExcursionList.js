@@ -26,6 +26,7 @@ const ExcursionList = () => {
     has_grill: null
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
   
   // Options for filters
   const [cantons, setCantons] = useState([]);
