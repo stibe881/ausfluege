@@ -203,7 +203,7 @@ const ExcursionDetail = () => {
                 )}
                 <div className="absolute top-4 left-4">
                   <Badge className="bg-white/90 text-emerald-700 hover:bg-white">
-                    {excursion.canton}
+                    {excursion.region || excursion.canton}
                   </Badge>
                 </div>
               </div>
