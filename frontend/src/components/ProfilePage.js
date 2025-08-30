@@ -12,6 +12,53 @@ const API = `${BACKEND_URL}/api`;
 
 const ProfilePage = () => {
   const { user, isAuthenticated, loading } = useContext(AuthContext);
+  const [userExcursions, setUserExcursions] = useState([]);
+  const [userReviews, setUserReviews] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      loadUserActivities();
+    }
+  }, [isAuthenticated, user]);
+
+  const loadUserActivities = async () => {
+    try {
+      // Load user's excursions
+      const excursionsResponse = await axios.get(`${API}/excursions`, {
+        withCredentials: true
+      });
+      const userExcs = excursionsResponse.data.filter(exc => exc.author_id === user.id);
+      setUserExcursions(userExcs);
+
+      // Load user's reviews (we'll need to get all reviews and filter)
+      // For now, we'll implement a simple solution
+      const reviewsResponse = await axios.get(`${API}/user/reviews`, {
+        withCredentials: true
+      });
+      setUserReviews(reviewsResponse.data || []);
+      
+    } catch (error) {
+      console.error('Error loading user activities:', error);
+      // If reviews endpoint doesn't exist yet, we'll work around it
+      setUserReviews([]);
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  const renderRating = (rating) => {
+    return (
+      <div className="flex items-center">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={`w-4 h-4 ${star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+          />
+        ))}
+      </div>
+    );
+  };
 
   if (loading) {
     return (
