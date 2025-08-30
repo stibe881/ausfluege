@@ -200,7 +200,7 @@ const LoginModal = ({ isOpen, onClose }) => {
           </form>
 
           {/* Switch Mode */}
-          <div className="text-center pt-4 border-t">
+          <div className="text-center pt-3 border-t mt-4">
             <p className="text-sm text-gray-600">
               {isLogin ? 'Noch kein Konto?' : 'Bereits ein Konto?'}
               <button
@@ -213,6 +213,7 @@ const LoginModal = ({ isOpen, onClose }) => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };
