@@ -103,6 +103,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/ausfluge" element={<ExcursionList />} />
               <Route path="/ausflug/:id" element={<ExcursionDetail />} />
+              <Route path="/ausflug/:id/bearbeiten" element={<EditExcursion />} />
               <Route path="/hinzufuegen" element={<AddExcursion />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
