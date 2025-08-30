@@ -755,9 +755,29 @@ def get_region_options_for_country(country: str):
     return region_mapping.get(country, [])
 
 # Utility Routes
+@api_router.get("/countries")
+async def get_countries():
+    return [{"value": country.name, "label": country.value} for country in Country]
+
+@api_router.get("/regions/{country_code}")
+async def get_regions(country_code: str):
+    # Find country by code or name
+    country_value = None
+    for country in Country:
+        if country.name == country_code or country.value == country_code:
+            country_value = country.value
+            break
+    
+    if not country_value:
+        raise HTTPException(status_code=404, detail="Country not found")
+    
+    regions = get_region_options_for_country(country_value)
+    return [{"value": region[0], "label": region[1]} for region in regions]
+
 @api_router.get("/cantons")
 async def get_cantons():
-    return [{"value": canton.name, "label": canton.value} for canton in Canton]
+    # Deprecated - use /regions/CH instead
+    return [{"value": canton.name, "label": canton.value} for canton in SwissCantons]
 
 @api_router.get("/categories")
 async def get_categories():
