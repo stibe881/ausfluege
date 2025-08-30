@@ -24,7 +24,8 @@ const EditExcursion = () => {
     title: '',
     description: '',
     address: '',
-    canton: '',
+    country: '',
+    region: '',
     category: '',
     website_url: '',
     has_grill: false,
@@ -36,10 +37,16 @@ const EditExcursion = () => {
   
   const [loading, setLoading] = useState(false);
   const [loadingExcursion, setLoadingExcursion] = useState(true);
-  const [cantons, setCantons] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [regions, setRegions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [parkingSituations, setParkingSituations] = useState([]);
   const [excursion, setExcursion] = useState(null);
+  
+  // Photo management
+  const [currentPhotos, setCurrentPhotos] = useState([]);
+  const [newPhotos, setNewPhotos] = useState([]);
+  const [photosToDelete, setPhotosToDelete] = useState([]);
 
   useEffect(() => {
     if (!isAuthenticated) {
