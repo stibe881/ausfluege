@@ -304,6 +304,175 @@ class AusflugFinderAPITester:
                     print(f"✅ Review by: {review.get('user_name')}")
                     print(f"✅ Rating: {review.get('rating')}/5")
 
+    def test_profile_and_edit_functionality(self):
+        """Test profile page and edit excursion functionality"""
+        print("\n=== Testing Profile and Edit Functionality ===")
+        
+        if not self.jwt_token or not self.test_excursion_id:
+            print("❌ No JWT token or excursion ID available - skipping profile tests")
+            return False
+        
+        # Test 1: Get User Reviews (Profile functionality)
+        print("\n--- Testing Get User Reviews ---")
+        success, response, json_data = self.run_test(
+            "Get User Reviews", 
+            "GET", 
+            "user/reviews", 
+            200,
+            auth_token=self.jwt_token
+        )
+        
+        if success and json_data and isinstance(json_data, list):
+            print(f"✅ Found {len(json_data)} reviews by user")
+            if len(json_data) > 0:
+                review = json_data[0]
+                print(f"✅ User review: {review.get('comment')[:50]}...")
+        
+        # Test 2: Update Excursion (Edit functionality)
+        print("\n--- Testing Update Excursion ---")
+        updated_excursion_data = {
+            "title": "Updated Test Wanderung JWT",
+            "description": "Eine aktualisierte schöne Testwanderung für JWT Authentication",
+            "address": "Neue Teststraße 456, 8002 Zürich",
+            "canton": "Zürich",
+            "category": "Wanderung",
+            "website_url": "https://updated-test.example.com",
+            "has_grill": False,
+            "is_outdoor": True,
+            "is_free": False,
+            "parking_situation": "Ausgezeichnet",
+            "parking_is_free": False
+        }
+        
+        success, response, json_data = self.run_test(
+            "Update Excursion (Owner)", 
+            "PUT", 
+            f"excursions/{self.test_excursion_id}", 
+            200, 
+            updated_excursion_data,
+            auth_token=self.jwt_token
+        )
+        
+        if success and json_data:
+            print(f"✅ Excursion updated! New title: {json_data.get('title')}")
+            print(f"✅ New description: {json_data.get('description')[:50]}...")
+            print(f"✅ Has grill changed to: {json_data.get('has_grill')}")
+            print(f"✅ Is free changed to: {json_data.get('is_free')}")
+        
+        # Test 3: Try to update excursion without authentication (Should fail)
+        print("\n--- Testing Update Excursion (No Auth) ---")
+        self.run_test(
+            "Update Excursion (No Auth)", 
+            "PUT", 
+            f"excursions/{self.test_excursion_id}", 
+            401, 
+            updated_excursion_data
+        )
+        
+        # Test 4: Verify updated excursion data
+        print("\n--- Testing Verify Updated Excursion ---")
+        success, response, json_data = self.run_test(
+            "Get Updated Excursion", 
+            "GET", 
+            f"excursions/{self.test_excursion_id}", 
+            200
+        )
+        
+        if success and json_data:
+            print(f"✅ Verified updated title: {json_data.get('title')}")
+            print(f"✅ Verified has_grill: {json_data.get('has_grill')}")
+            print(f"✅ Verified is_free: {json_data.get('is_free')}")
+        
+        return True
+
+    def test_delete_functionality(self):
+        """Test delete excursion functionality"""
+        print("\n=== Testing Delete Functionality ===")
+        
+        if not self.jwt_token or not self.test_excursion_id:
+            print("❌ No JWT token or excursion ID available - skipping delete tests")
+            return False
+        
+        # Test 1: Try to delete excursion without authentication (Should fail)
+        print("\n--- Testing Delete Excursion (No Auth) ---")
+        success, response, json_data = self.run_test(
+            "Delete Excursion (No Auth)", 
+            "DELETE", 
+            f"excursions/{self.test_excursion_id}", 
+            401
+        )
+        
+        # Test 2: Delete excursion as owner (Should succeed)
+        print("\n--- Testing Delete Excursion (Owner) ---")
+        success, response, json_data = self.run_test(
+            "Delete Excursion (Owner)", 
+            "DELETE", 
+            f"excursions/{self.test_excursion_id}", 
+            200,
+            auth_token=self.jwt_token
+        )
+        
+        if success:
+            print(f"✅ Excursion deleted successfully")
+        
+        # Test 3: Verify excursion is deleted (Should return 404)
+        print("\n--- Testing Verify Excursion Deleted ---")
+        success, response, json_data = self.run_test(
+            "Get Deleted Excursion", 
+            "GET", 
+            f"excursions/{self.test_excursion_id}", 
+            404
+        )
+        
+        if success:
+            print(f"✅ Confirmed excursion is deleted (404 response)")
+        
+        return True
+
+    def run_test(self, name, method, endpoint, expected_status, data=None, auth_token=None, cookies=None):
+        """Run a single API test"""
+        url = f"{self.api_url}/{endpoint}"
+        headers = {'Content-Type': 'application/json'}
+        
+        if auth_token:
+            headers['Authorization'] = f'Bearer {auth_token}'
+
+        self.tests_run += 1
+        print(f"\n🔍 Testing {name}...")
+        print(f"URL: {url}")
+        
+        try:
+            if method == 'GET':
+                response = requests.get(url, headers=headers, cookies=cookies, timeout=10)
+            elif method == 'POST':
+                response = requests.post(url, json=data, headers=headers, cookies=cookies, timeout=10)
+            elif method == 'PUT':
+                response = requests.put(url, json=data, headers=headers, cookies=cookies, timeout=10)
+            elif method == 'DELETE':
+                response = requests.delete(url, headers=headers, cookies=cookies, timeout=10)
+
+            success = response.status_code == expected_status
+            if success:
+                self.tests_passed += 1
+                print(f"✅ Passed - Status: {response.status_code}")
+                if response.content:
+                    try:
+                        json_data = response.json()
+                        print(f"Response: {json_data}")
+                        return success, response, json_data
+                    except:
+                        print(f"Response: {response.text[:200]}...")
+                        return success, response, None
+            else:
+                print(f"❌ Failed - Expected {expected_status}, got {response.status_code}")
+                print(f"Response: {response.text[:200]}...")
+
+            return success, response, None
+
+        except Exception as e:
+            print(f"❌ Failed - Error: {str(e)}")
+            return False, None, None
+
 def main():
     print("🚀 Starting COMPREHENSIVE AusflugFinder API Tests...")
     print("🔐 Testing DUAL AUTHENTICATION SYSTEM")
