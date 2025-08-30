@@ -205,7 +205,8 @@ class ExcursionCreate(BaseModel):
     title: str = Field(..., min_length=3, max_length=200)
     description: str = Field(..., min_length=10, max_length=2000)
     address: str = Field(..., min_length=5, max_length=300)
-    canton: str  # Accept string, validate in endpoint
+    country: str  # Accept string, validate in endpoint
+    region: str  # Accept string, validate in endpoint (canton/bundesland/région etc.)
     category: str  # Accept string, validate in endpoint
     website_url: Optional[str] = None
     has_grill: bool = False
