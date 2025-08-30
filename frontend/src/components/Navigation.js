@@ -28,9 +28,12 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 text-emerald-700 font-bold text-xl">
-            <MapPin className="w-6 h-6" />
-            <span>AusflugFinder</span>
+          <Link to="/" className="flex items-center space-x-2">
+            <img 
+              src="/logo.svg" 
+              alt="AusflugFinder Logo" 
+              className="h-8 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
