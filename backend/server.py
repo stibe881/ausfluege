@@ -699,6 +699,33 @@ async def upload_photos(
     
     return {"uploaded_files": uploaded_files}
 
+@api_router.delete("/excursions/{excursion_id}/photos/{photo_name}")
+async def delete_photo(
+    excursion_id: str,
+    photo_name: str,
+    current_user: User = Depends(get_current_user)
+):
+    # Check if excursion exists and user owns it
+    excursion = await db.excursions.find_one({"id": excursion_id})
+    if not excursion:
+        raise HTTPException(status_code=404, detail="Excursion not found")
+    
+    if excursion["author_id"] != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Remove photo from database
+    await db.excursions.update_one(
+        {"id": excursion_id},
+        {"$pull": {"photos": photo_name}}
+    )
+    
+    # Delete physical file
+    file_path = UPLOAD_DIR / photo_name
+    if file_path.exists():
+        file_path.unlink()
+    
+    return {"message": "Photo deleted successfully"}
+
 # Review Routes
 @api_router.get("/excursions/{excursion_id}/reviews", response_model=List[Review])
 async def get_reviews(excursion_id: str):
