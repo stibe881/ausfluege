@@ -66,19 +66,54 @@ const AddExcursion = () => {
 
   const loadOptions = async () => {
     try {
-      const [cantonsRes, categoriesRes, parkingRes] = await Promise.all([
-        axios.get(`${API}/cantons`),
+      const [countriesRes, categoriesRes, parkingRes] = await Promise.all([
+        axios.get(`${API}/countries`),
         axios.get(`${API}/categories`),
         axios.get(`${API}/parking-situations`)
       ]);
       
-      setCantons(cantonsRes.data);
+      setCountries(countriesRes.data);
       setCategories(categoriesRes.data);
       setParkingSituations(parkingRes.data);
+      
+      // Load default regions for Switzerland
+      if (formData.country) {
+        loadRegionsForCountry(formData.country);
+      }
     } catch (error) {
       console.error('Error loading options:', error);
       toast.error('Fehler beim Laden der Optionen');
     }
+  };
+
+  const loadRegionsForCountry = async (countryCode) => {
+    try {
+      const response = await axios.get(`${API}/regions/${countryCode}`);
+      setRegions(response.data);
+    } catch (error) {
+      console.error('Error loading regions:', error);
+      setRegions([]);
+    }
+  };
+
+  const handleCountryChange = (countryCode) => {
+    setFormData(prev => ({
+      ...prev,
+      country: countryCode,
+      region: '' // Reset region when country changes
+    }));
+    loadRegionsForCountry(countryCode);
+  };
+
+  const getRegionLabel = (country) => {
+    const labels = {
+      'CH': 'Kanton',
+      'DE': 'Bundesland', 
+      'IT': 'Region',
+      'FR': 'Région',
+      'AT': 'Bundesland'
+    };
+    return labels[country] || 'Region';
   };
 
   const handleInputChange = (name, value) => {
