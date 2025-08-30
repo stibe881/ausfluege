@@ -197,7 +197,7 @@ const LoginModal = ({ isOpen, onClose }) => {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="w-full bg-gray-700 hover:bg-gray-800 text-white shadow-lg"
               size="lg"
             >
               {loading ? (
@@ -210,6 +210,7 @@ const LoginModal = ({ isOpen, onClose }) => {
               )}
             </Button>
           </form>
+          </div>
 
           {/* Switch Mode */}
           <div className="text-center pt-3 border-t mt-4">
