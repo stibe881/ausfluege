@@ -359,6 +359,7 @@ async def handle_auth_callback(request: Request):
         "email": auth_data["email"],
         "name": auth_data["name"],
         "picture": auth_data["picture"],
+        "is_oauth": True,
         "created_at": datetime.now(timezone.utc)
     }
     
