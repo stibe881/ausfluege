@@ -545,6 +545,18 @@ async def get_excursion(excursion_id: str):
     excursion = await db.excursions.find_one({"id": excursion_id})
     if not excursion:
         raise HTTPException(status_code=404, detail="Excursion not found")
+    
+    # Handle backward compatibility - convert old canton field to new country/region format
+    if "canton" in excursion and "country" not in excursion:
+        excursion["country"] = "Schweiz"  # Old data was Switzerland only
+        excursion["region"] = excursion.get("canton", "")
+    
+    # Ensure required fields exist
+    if "country" not in excursion:
+        excursion["country"] = "Schweiz"
+    if "region" not in excursion:
+        excursion["region"] = excursion.get("canton", "Zürich")
+        
     return Excursion(**excursion)
 
 @api_router.post("/excursions", response_model=Excursion)
