@@ -1,0 +1,38 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Mountain silhouette background -->
+  <path d="M0 35L15 25L30 30L45 20L60 25L75 15L90 20L105 10L120 15L135 5L150 10L165 8L180 12L200 8V60H0V35Z" fill="url(#mountainGradient)"/>
+  
+  <!-- Hiking trail -->
+  <path d="M10 45Q30 40 50 42T90 40Q110 38 130 40T170 42Q180 43 190 44" stroke="#10B981" stroke-width="2" fill="none" stroke-dasharray="3,3"/>
+  
+  <!-- Trees -->
+  <circle cx="25" cy="35" r="3" fill="#059669"/>
+  <rect x="24" y="35" width="2" height="8" fill="#92400E"/>
+  
+  <circle cx="75" cy="25" r="4" fill="#047857"/>
+  <rect x="74" y="25" width="2" height="10" fill="#92400E"/>
+  
+  <circle cx="125" cy="20" r="3.5" fill="#065F46"/>
+  <rect x="124" y="20" width="2" height="9" fill="#92400E"/>
+  
+  <!-- Sun -->
+  <circle cx="170" cy="15" r="8" fill="url(#sunGradient)"/>
+  <path d="M170 2L172 8M185 15L179 15M178 7L174 11M178 23L174 19M170 28L172 22M162 23L166 19M162 7L166 11M155 15L161 15" stroke="#FCD34D" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Text -->
+  <text x="5" y="55" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#047857">AusflugFinder</text>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#059669" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#047857" stop-opacity="0.1"/>
+    </linearGradient>
+    
+    <radialGradient id="sunGradient" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </radialGradient>
+  </defs>
+</svg>
