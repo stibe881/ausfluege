@@ -104,10 +104,10 @@ const LoginModal = ({ isOpen, onClose }) => {
             Mit Emergent {isLogin ? 'anmelden' : 'registrieren'}
           </Button>
 
-          <div className="relative">
-            <Separator className="my-4" />
+          <div className="relative my-3">
+            <Separator />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="bg-white px-2 text-gray-500 text-sm">oder</span>
+              <span className="bg-white px-3 text-gray-500 text-sm font-medium">oder</span>
             </div>
           </div>
 
