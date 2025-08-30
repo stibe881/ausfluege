@@ -6,6 +6,7 @@ import { Search, MapPin, Star, Users, Plus, ArrowRight, Mountain, Waves, TreePin
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
+import LoginModal from './LoginModal';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
