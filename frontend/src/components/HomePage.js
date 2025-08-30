@@ -275,7 +275,7 @@ const HomePage = () => {
             </p>
             <Button 
               size="lg" 
-              onClick={() => window.location.href = 'https://auth.emergentagent.com/?redirect=' + encodeURIComponent(window.location.origin + '/profile')}
+              onClick={() => setShowLoginModal(true)}
               className="bg-white text-emerald-600 hover:bg-emerald-50 btn-hover font-semibold px-8 py-3"
             >
               <Users className="w-5 h-5 mr-2" />
