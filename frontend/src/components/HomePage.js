@@ -284,6 +284,11 @@ const HomePage = () => {
           </div>
         </section>
       )}
+      
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)} 
+      />
     </div>
   );
 };
