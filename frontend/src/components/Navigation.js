@@ -159,7 +159,7 @@ const Navigation = () => {
             ) : (
               <button
                 onClick={() => {
-                  login();
+                  openLoginModal();
                   setIsMobileMenuOpen(false);
                 }}
                 className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium bg-emerald-600 text-white w-full"
