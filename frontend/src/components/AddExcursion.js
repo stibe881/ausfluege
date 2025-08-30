@@ -24,7 +24,8 @@ const AddExcursion = () => {
     title: '',
     description: '',
     address: '',
-    canton: '',
+    country: 'CH', // Default to Switzerland
+    region: '',
     category: '',
     website_url: '',
     has_grill: false,
@@ -36,7 +37,8 @@ const AddExcursion = () => {
   
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [cantons, setCantons] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [regions, setRegions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [parkingSituations, setParkingSituations] = useState([]);
   
