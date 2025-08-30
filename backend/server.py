@@ -158,25 +158,33 @@ class Review(ReviewCreate):
 
 # Auth functions
 async def get_current_user(request: Request, session_token: str = Cookie(None, alias="session_token")):
-    if not session_token:
+    token = session_token
+    
+    if not token:
         auth_header = request.headers.get("Authorization")
         if auth_header and auth_header.startswith("Bearer "):
-            session_token = auth_header.split(" ")[1]
+            token = auth_header.split(" ")[1]
     
-    if not session_token:
+    if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
     
-    # Check session in database
-    session = await db.sessions.find_one({"session_token": session_token})
-    if not session or datetime.now(timezone.utc) > session["expires_at"]:
-        raise HTTPException(status_code=401, detail="Session expired")
+    # First try to verify as JWT token (normal login)
+    payload = verify_token(token)
+    if payload:
+        user_id = payload.get("sub")
+        if user_id:
+            user = await db.users.find_one({"id": user_id})
+            if user:
+                return User(**user)
     
-    # Get user
-    user = await db.users.find_one({"id": session["user_id"]})
-    if not user:
-        raise HTTPException(status_code=401, detail="User not found")
+    # If not JWT, try as OAuth session token
+    session = await db.sessions.find_one({"session_token": token})
+    if session and datetime.now(timezone.utc) <= session["expires_at"]:
+        user = await db.users.find_one({"id": session["user_id"]})
+        if user:
+            return User(**user)
     
-    return User(**user)
+    raise HTTPException(status_code=401, detail="Invalid or expired token")
 
 async def get_optional_user(request: Request, session_token: str = Cookie(None, alias="session_token")):
     try:
