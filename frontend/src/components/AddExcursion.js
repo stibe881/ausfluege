@@ -360,19 +360,40 @@ const AddExcursion = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="canton">Kanton *</Label>
+                  <Label htmlFor="country">Land *</Label>
                   <Select 
-                    value={formData.canton} 
-                    onValueChange={(value) => handleInputChange('canton', value)}
+                    value={formData.country} 
+                    onValueChange={handleCountryChange}
                     required
                   >
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Kanton wählen" />
+                      <SelectValue placeholder="Land wählen" />
                     </SelectTrigger>
                     <SelectContent>
-                      {cantons.map((canton) => (
-                        <SelectItem key={canton.value} value={canton.value}>
-                          {canton.label}
+                      {countries.map((country) => (
+                        <SelectItem key={country.value} value={country.value}>
+                          {country.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="region">{getRegionLabel(formData.country)} *</Label>
+                  <Select 
+                    value={formData.region} 
+                    onValueChange={(value) => handleInputChange('region', value)}
+                    required
+                    disabled={!formData.country}
+                  >
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder={`${getRegionLabel(formData.country)} wählen`} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {regions.map((region) => (
+                        <SelectItem key={region.value} value={region.value}>
+                          {region.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
