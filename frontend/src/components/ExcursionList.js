@@ -375,7 +375,7 @@ const ExcursionList = () => {
                     )}
                     <div className="absolute top-3 right-3">
                       <Badge className="bg-white/90 text-emerald-700 hover:bg-white">
-                        {excursion.canton}
+                        {excursion.region || excursion.canton}
                       </Badge>
                     </div>
                   </div>
