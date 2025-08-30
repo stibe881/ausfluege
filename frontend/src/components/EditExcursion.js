@@ -174,15 +174,44 @@ const EditExcursion = () => {
 
     try {
       if (!formData.title || !formData.description || !formData.address || 
-          !formData.canton || !formData.category || !formData.parking_situation) {
+          !formData.country || !formData.region || !formData.category || !formData.parking_situation) {
         toast.error('Bitte fülle alle Pflichtfelder aus');
         setLoading(false);
         return;
       }
 
+      // Update excursion data
       await axios.put(`${API}/excursions/${id}`, formData, {
         withCredentials: true
       });
+
+      // Handle photo deletions
+      if (photosToDelete.length > 0) {
+        for (const photoName of photosToDelete) {
+          try {
+            await axios.delete(`${API}/excursions/${id}/photos/${photoName}`, {
+              withCredentials: true
+            });
+          } catch (error) {
+            console.warn(`Failed to delete photo ${photoName}:`, error);
+          }
+        }
+      }
+
+      // Upload new photos
+      if (newPhotos.length > 0) {
+        const photoFormData = new FormData();
+        newPhotos.forEach((photo) => {
+          photoFormData.append('files', photo);
+        });
+
+        await axios.post(`${API}/excursions/${id}/photos`, photoFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true
+        });
+      }
 
       toast.success('Ausflug erfolgreich aktualisiert!');
       navigate(`/ausflug/${id}`);
