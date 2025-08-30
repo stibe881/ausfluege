@@ -129,34 +129,137 @@ const ProfilePage = () => {
           </Card>
         </div>
 
-        {/* Coming Soon Section */}
-        <Card className="border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle>Deine Aktivitäten</CardTitle>
-          </CardHeader>
-          <CardContent className="p-8 text-center">
-            <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <MapPin className="w-8 h-8 text-gray-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Noch keine Aktivitäten
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Beginne damit, Ausflüge hinzuzufügen oder zu bewerten, um deine Aktivitäten hier zu sehen.
-            </p>
-            <div className="space-y-4">
-              <p className="text-sm text-gray-500">
-                Bald verfügbar:
-              </p>
-              <ul className="text-sm text-gray-600 space-y-2">
-                <li>• Liste deiner hinzugefügten Ausflüge</li>
-                <li>• Übersicht deiner Bewertungen</li>
-                <li>• Favoriten und Merkliste</li>
-                <li>• Besuchte Ausflüge</li>
-              </ul>
-            </div>
-          </CardContent>
-        </Card>
+        {/* User Activities */}
+        {loadingData ? (
+          <Card className="border-0 shadow-lg">
+            <CardContent className="p-8 text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Lade deine Aktivitäten...</p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-8">
+            {/* User's Excursions */}
+            <Card className="border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <MapPin className="w-5 h-5 text-emerald-600" />
+                  <span>Deine Ausflüge ({userExcursions.length})</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {userExcursions.length === 0 ? (
+                  <div className="text-center py-8">
+                    <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Noch keine Ausflüge hinzugefügt
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      Füge deinen ersten Ausflug hinzu und teile ihn mit der Community!
+                    </p>
+                    <Link to="/hinzufuegen">
+                      <Button className="bg-emerald-600 hover:bg-emerald-700">
+                        Ersten Ausflug hinzufügen
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {userExcursions.map((excursion) => (
+                      <Card key={excursion.id} className="border border-gray-200">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start mb-3">
+                            <h3 className="font-semibold text-lg text-gray-900 line-clamp-1">
+                              {excursion.title}
+                            </h3>
+                            <Badge className="bg-emerald-100 text-emerald-800 text-xs">
+                              {excursion.canton}
+                            </Badge>
+                          </div>
+                          
+                          <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                            {excursion.description}
+                          </p>
+                          
+                          <div className="flex items-center justify-between mb-4">
+                            {renderRating(excursion.average_rating)}
+                            <span className="text-sm text-gray-600">
+                              {excursion.review_count} Bewertung{excursion.review_count !== 1 ? 'en' : ''}
+                            </span>
+                          </div>
+                          
+                          <div className="flex space-x-2">
+                            <Link to={`/ausflug/${excursion.id}`} className="flex-1">
+                              <Button variant="outline" size="sm" className="w-full">
+                                <Eye className="w-4 h-4 mr-1" />
+                                Ansehen
+                              </Button>
+                            </Link>
+                            <Link to={`/ausflug/${excursion.id}/bearbeiten`} className="flex-1">
+                              <Button size="sm" className="w-full bg-emerald-600 hover:bg-emerald-700">
+                                <Edit className="w-4 h-4 mr-1" />
+                                Bearbeiten
+                              </Button>
+                            </Link>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* User's Reviews */}
+            <Card className="border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <MessageCircle className="w-5 h-5 text-emerald-600" />
+                  <span>Deine Bewertungen ({userReviews.length})</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {userReviews.length === 0 ? (
+                  <div className="text-center py-8">
+                    <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Noch keine Bewertungen geschrieben
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      Besuche Ausflüge und teile deine Erfahrungen mit anderen!
+                    </p>
+                    <Link to="/ausfluge">
+                      <Button className="bg-emerald-600 hover:bg-emerald-700">
+                        Ausflüge entdecken
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {userReviews.map((review) => (
+                      <Card key={review.id} className="border border-gray-200">
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex items-center space-x-2">
+                              {renderRating(review.rating)}
+                              <span className="text-sm text-gray-500">
+                                {new Date(review.created_at).toLocaleDateString('de-CH')}
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-gray-700 mb-3">{review.comment}</p>
+                          <Link to={`/ausflug/${review.excursion_id}`} className="text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                            Ausflug ansehen →
+                          </Link>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );
