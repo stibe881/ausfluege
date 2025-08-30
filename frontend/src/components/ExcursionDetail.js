@@ -5,7 +5,7 @@ import axios from 'axios';
 import { 
   MapPin, Star, User, Calendar, ExternalLink, Car, 
   Mountain, TreePine, Waves, ArrowLeft, MessageCircle,
-  Grill, Home, DollarSign, ParkerSquare
+  Flame, Home, DollarSign, ParkingCircle
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
