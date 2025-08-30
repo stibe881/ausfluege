@@ -83,26 +83,29 @@ const LoginModal = ({ isOpen, onClose }) => {
     >
       <div className="bg-white rounded-lg shadow-2xl w-full max-w-md mx-auto">
         <div className="relative bg-white rounded-lg">
-          <CardHeader className="relative pb-4 px-8 pt-8 bg-white">
+          {/* Header */}
+          <div className="relative p-6 bg-white border-b rounded-t-lg">
             <button
               onClick={onClose}
-              className="absolute right-6 top-6 p-2 hover:bg-gray-100 rounded-full transition-colors z-20 bg-white"
+              className="absolute right-4 top-4 p-1 hover:bg-gray-100 rounded-full transition-colors"
+              style={{ zIndex: 1000 }}
             >
-              <X className="w-5 h-5 text-gray-500" />
+              <X className="w-6 h-6 text-gray-500" />
             </button>
             
-            <CardTitle className="text-center text-2xl font-bold text-gray-900 mb-3 pr-12">
+            <h2 className="text-center text-2xl font-bold text-gray-900 mb-2">
               {isLogin ? '🔐 Anmelden' : '✨ Registrieren'}
-            </CardTitle>
-            <p className="text-center text-gray-600 text-base">
+            </h2>
+            <p className="text-center text-gray-600">
               {isLogin 
                 ? 'Wähle deine bevorzugte Anmelde-Methode'
                 : 'Erstelle dein Konto mit einer der folgenden Optionen'
               }
             </p>
-          </CardHeader>
+          </div>
           
-          <CardContent className="space-y-5 px-8 pb-8 bg-white">
+          {/* Content */}
+          <div className="p-6 bg-white space-y-5 rounded-b-lg">
           {/* OAuth Login Button - Option 1 */}
           <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
             <h3 className="font-semibold text-emerald-800 mb-2 text-center">
