@@ -184,22 +184,39 @@ const MapView = ({ excursions, filters }) => {
   };
 
   return (
-    <div className="w-full h-[600px] rounded-lg overflow-hidden border border-gray-200 shadow-lg">
-      <div ref={mapRef} className="w-full h-full" />
-      
-      {excursions.length === 0 && (
-        <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center">
-          <div className="text-center">
-            <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Keine Ausflüge auf der Karte
-            </h3>
-            <p className="text-gray-600">
-              Passe deine Filter an oder füge neue Ausflüge hinzu
-            </p>
-          </div>
+    <div className="w-full h-[600px] rounded-lg overflow-hidden border border-gray-200 shadow-lg bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center">
+      <div className="text-center p-8">
+        <MapPin className="w-16 h-16 text-emerald-600 mx-auto mb-4" />
+        <h3 className="text-2xl font-bold text-gray-900 mb-3">
+          🗺️ Kartenansicht
+        </h3>
+        <p className="text-gray-600 mb-4 max-w-md">
+          Die interaktive Kartenansicht wird bald verfügbar sein. 
+          Momentan zeigen wir {excursions.length} Ausflüge in der Listenansicht.
+        </p>
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <h4 className="font-semibold text-gray-900 mb-2">Verfügbare Ausflüge:</h4>
+          {excursions.length === 0 ? (
+            <p className="text-gray-500">Keine Ausflüge gefunden</p>
+          ) : (
+            <div className="space-y-2">
+              {excursions.slice(0, 5).map((excursion) => (
+                <div key={excursion.id} className="flex items-center justify-between text-sm">
+                  <span className="font-medium">{excursion.title}</span>
+                  <Badge className="bg-emerald-100 text-emerald-800 text-xs">
+                    {excursion.canton}
+                  </Badge>
+                </div>
+              ))}
+              {excursions.length > 5 && (
+                <p className="text-gray-500 text-xs">
+                  ... und {excursions.length - 5} weitere
+                </p>
+              )}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
