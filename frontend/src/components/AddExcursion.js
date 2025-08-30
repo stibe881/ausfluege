@@ -39,6 +39,12 @@ const AddExcursion = () => {
   const [cantons, setCantons] = useState([]);
   const [categories, setCategories] = useState([]);
   const [parkingSituations, setParkingSituations] = useState([]);
+  
+  // Google Places states
+  const [placeSuggestions, setPlaceSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [placesService, setPlacesService] = useState(null);
+  const [autocompleteService, setAutocompleteService] = useState(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
