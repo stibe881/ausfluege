@@ -77,26 +77,26 @@ const LoginModal = ({ isOpen, onClose }) => {
     >
       <div className="w-full max-w-lg my-8 relative">
         <Card className="w-full border shadow-2xl bg-white relative z-[10000]">
-          <CardHeader className="relative pb-3 px-6 pt-6">
+          <CardHeader className="relative pb-4 px-8 pt-8 bg-white">
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 p-1 hover:bg-gray-100 rounded-full transition-colors z-10"
+              className="absolute right-6 top-6 p-2 hover:bg-gray-100 rounded-full transition-colors z-20 bg-white"
             >
               <X className="w-5 h-5 text-gray-500" />
             </button>
             
-            <CardTitle className="text-center text-xl font-bold text-gray-900 mb-2 pr-8">
-              {isLogin ? 'Anmelden' : 'Registrieren'}
+            <CardTitle className="text-center text-2xl font-bold text-gray-900 mb-3 pr-12">
+              {isLogin ? '🔐 Anmelden' : '✨ Registrieren'}
             </CardTitle>
-            <p className="text-center text-gray-600 text-sm">
+            <p className="text-center text-gray-600 text-base">
               {isLogin 
-                ? 'Melde dich an, um Ausflüge hinzuzufügen und zu bewerten'
-                : 'Erstelle ein Konto und werde Teil unserer Community'
+                ? 'Wähle deine bevorzugte Anmelde-Methode'
+                : 'Erstelle dein Konto mit einer der folgenden Optionen'
               }
             </p>
           </CardHeader>
           
-          <CardContent className="space-y-4 px-6 pb-6">
+          <CardContent className="space-y-5 px-8 pb-8 bg-white">
           {/* OAuth Login Button */}
           <Button
             onClick={handleOAuthLogin}
