@@ -71,28 +71,29 @@ const LoginModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <Card className="w-full max-w-md border-0 shadow-2xl">
-        <CardHeader className="relative pb-4">
-          <button
-            onClick={onClose}
-            className="absolute right-4 top-4 p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <X className="w-5 h-5 text-gray-500" />
-          </button>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
+      <div className="w-full max-w-md my-8">
+        <Card className="w-full border-0 shadow-2xl max-h-[90vh] overflow-y-auto">
+          <CardHeader className="relative pb-3 px-6 pt-6">
+            <button
+              onClick={onClose}
+              className="absolute right-4 top-4 p-1 hover:bg-gray-100 rounded-full transition-colors z-10"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+            
+            <CardTitle className="text-center text-xl font-bold text-gray-900 mb-2 pr-8">
+              {isLogin ? 'Anmelden' : 'Registrieren'}
+            </CardTitle>
+            <p className="text-center text-gray-600 text-sm">
+              {isLogin 
+                ? 'Melde dich an, um Ausflüge hinzuzufügen und zu bewerten'
+                : 'Erstelle ein Konto und werde Teil unserer Community'
+              }
+            </p>
+          </CardHeader>
           
-          <CardTitle className="text-center text-2xl font-bold text-gray-900 mb-2">
-            {isLogin ? 'Anmelden' : 'Registrieren'}
-          </CardTitle>
-          <p className="text-center text-gray-600 text-sm">
-            {isLogin 
-              ? 'Melde dich an, um Ausflüge hinzuzufügen und zu bewerten'
-              : 'Erstelle ein Konto und werde Teil unserer Community'
-            }
-          </p>
-        </CardHeader>
-        
-        <CardContent className="space-y-6">
+          <CardContent className="space-y-4 px-6 pb-6">
           {/* OAuth Login Button */}
           <Button
             onClick={handleOAuthLogin}
